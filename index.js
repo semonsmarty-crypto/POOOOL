@@ -1,7 +1,13 @@
+import http from "http";
+
 const PORT = process.env.PORT || 3000;
-require('http')
-  .createServer((req, res) => res.end('Bot is running'))
-  .listen(PORT, () => console.log(`Listening on port ${PORT}`));
+
+http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+  res.end("Bot is alive");
+}).listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
 
 import { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionFlagsBits } from 'discord.js';
 import axios from 'axios';
