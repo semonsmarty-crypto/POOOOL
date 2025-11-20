@@ -1,3 +1,8 @@
+const PORT = process.env.PORT || 3000;
+require('http').createServer((req, res) => res.end('OK')).listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+});
+
 import { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionFlagsBits } from 'discord.js';
 import axios from 'axios';
 import fs from 'fs';
