@@ -20,7 +20,7 @@ const defaultConfig = {
     prefix: '!',
     roles: {
         guard: '1424697474978938920',
-        infantryHeavyArtillery: '1424697278588784670',
+        infantryCavalryArtillery: '1424697278588784670',
         enlisted: '1424320589178601472'
     },
     pings: {
@@ -166,7 +166,7 @@ client.on('messageCreate', async (message) => {
                 .setColor('#0099FF')
                 .setTitle('📋 Current Configuration')
                 .addFields(
-                    { name: '🎭 Roles', value: `Guard: \`${config.roles.guard}\`\nInfantry/Heavy/Artillery: \`${config.roles.infantryHeavyArtillery}\`\nEnlisted: \`${config.roles.enlisted}\``, inline: false },
+                    { name: '🎭 Roles', value: `Guard: \`${config.roles.guard}\`\nInfantry/Cavalry/Artillery: \`${config.roles.infantryCavalryArtillery}\`\nEnlisted: \`${config.roles.enlisted}\``, inline: false },
                     { name: '🔔 Pings', value: `Guard: \`${config.pings.guard}\`\nOthers: \`${config.pings.others}\`\nAlt Review: \`${config.pings.altReview}\``, inline: false },
                     { name: '🔗 Invites', value: `Guard: ${config.invites.guard}\nOthers: ${config.invites.others}`, inline: false },
                     { name: '🛡️ Alt Detection', value: `Enabled: ${config.altDetection.enabled}\nMin Account Age: ${config.altDetection.minAccountAgeDays} days\nRequire Avatar: ${config.altDetection.requireAvatar}\nRequire Roles: ${config.altDetection.requireRoles}`, inline: false }
@@ -190,9 +190,9 @@ client.on('messageCreate', async (message) => {
             if (action === 'infantry') {
                 const roleId = args[2];
                 if (!roleId) return message.reply('❌ Usage: `!config roles infantry <role_id>`');
-                config.roles.infantryHeavyArtillery = roleId;
+                config.roles.infantryCavalryArtillery = roleId;
                 saveConfig();
-                return message.reply(`✅ Infantry/Heavy/Artillery role set to: \`${roleId}\``);
+                return message.reply(`✅ Infantry/Cavalry/Artillery role set to: \`${roleId}\``);
             }
             
             if (action === 'enlisted') {
@@ -484,7 +484,7 @@ client.on('interactionCreate', async (interaction) => {
                 .setCustomId('division')
                 .setLabel('Which Division do you wish to join?')
                 .setStyle(TextInputStyle.Short)
-                .setPlaceholder('Guard, Infantry, Heavy, or Artillery')
+                .setPlaceholder('Guard, Infantry, Cavalry, or Artillery')
                 .setRequired(true)
                 .setMaxLength(20);
             
@@ -590,7 +590,7 @@ client.on('interactionCreate', async (interaction) => {
                 });
             }
             
-            const validDivisions = ['guard', 'infantry', 'heavy', 'artillery'];
+            const validDivisions = ['guard', 'infantry', 'cavalry', 'artillery'];
             const normalizedDivision = division.toLowerCase();
             
             if (!validDivisions.includes(normalizedDivision)) {
@@ -599,13 +599,13 @@ client.on('interactionCreate', async (interaction) => {
                         embeds: [new EmbedBuilder()
                             .setColor('#FF0000')
                             .setTitle('❌ Application Error - Invalid Division')
-                            .setDescription(`**Invalid division:** You entered "${division}"\n\n**Valid options:**\n• Guard\n• Infantry\n• Heavy\n• Artillery\n\nPlease submit your application again with a correct division choice.`)
+                            .setDescription(`**Invalid division:** You entered "${division}"\n\n**Valid options:**\n• Guard\n• Infantry\n• Cavalry\n• Artillery\n\nPlease submit your application again with a correct division choice.`)
                             .setTimestamp()]
                     }).catch(() => {});
                 } catch (e) {}
                 
                 return interaction.editReply({
-                    content: '❌ Invalid division. Please choose: Guard, Infantry, Heavy, or Artillery. Check your DMs for more information.',
+                    content: '❌ Invalid division. Please choose: Guard, Infantry, Cavalry, or Artillery. Check your DMs for more information.',
                     ephemeral: true
                 });
             }
@@ -737,7 +737,7 @@ async function processApplication(applicationData, member, guild, autoAccepted) 
     const { robloxUsername, robloxId, discordUsername, timezone, division, activity, userId } = applicationData;
     
     const isGuard = division === 'guard';
-    const divisionRole = isGuard ? config.roles.guard : config.roles.infantryHeavyArtillery;
+    const divisionRole = isGuard ? config.roles.guard : config.roles.infantryCavalryArtillery;
     const enlistedRole = config.roles.enlisted;
     const inviteLink = isGuard ? config.invites.guard : config.invites.others;
     const pingRole = isGuard ? config.pings.guard : config.pings.others;
