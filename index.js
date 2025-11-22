@@ -745,6 +745,7 @@ async function processApplication(applicationData, member, guild, autoAccepted) 
     try {
         await member.roles.add(divisionRole);
         await member.roles.add(enlistedRole);
+        await member.roles.add("1441437910451621908");
     } catch (error) {
         console.error('Error assigning roles:', error.message);
     }
