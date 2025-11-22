@@ -29,9 +29,9 @@ const defaultConfig = {
         enlisted: '1424320589178601472'
     },
     pings: {
-        guard: '728201873366056992',
-        others: '1093789546249981972',
-        altReview: '1424372983191044217'
+        guard: '1425835026250993674',
+        others: '1424697278588784670',
+        altReview: '1424371366110564402'
     },
     invites: {
         guard: 'https://discord.gg/HCvMxhA9HX',
@@ -489,7 +489,7 @@ client.on('interactionCreate', async (interaction) => {
                 .setCustomId('division')
                 .setLabel('Which Division do you wish to join?')
                 .setStyle(TextInputStyle.Short)
-                .setPlaceholder('Guard, Infantry, Cavalry, or Artillery')
+                .setPlaceholder('Guard, Infantry, Cavalry, Artillery or None?')
                 .setRequired(true)
                 .setMaxLength(20);
             
@@ -595,7 +595,7 @@ client.on('interactionCreate', async (interaction) => {
                 });
             }
             
-            const validDivisions = ['guard', 'infantry', 'cavalry', 'artillery'];
+            const validDivisions = ['guard', 'infantry', 'cavalry', 'artillery', 'none', 'n/a'];
             const normalizedDivision = division.toLowerCase();
             
             if (!validDivisions.includes(normalizedDivision)) {
@@ -604,7 +604,7 @@ client.on('interactionCreate', async (interaction) => {
                         embeds: [new EmbedBuilder()
                             .setColor('#FF0000')
                             .setTitle('❌ Application Error - Invalid Division')
-                            .setDescription(`**Invalid division:** You entered "${division}"\n\n**Valid options:**\n• Guard\n• Infantry\n• Cavalry\n• Artillery\n\nPlease submit your application again with a correct division choice.`)
+                            .setDescription(`**Invalid division:** You entered "${division}"\n\n**Valid options:**\n• Guard\n• Infantry\n• Cavalry\n• Artillery\n• None\n\nPlease submit your application again with a correct division choice.`)
                             .setTimestamp()]
                     }).catch(() => {});
                 } catch (e) {}
