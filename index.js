@@ -9,6 +9,11 @@ http.createServer((req, res) => {
   console.log(`Server running on port ${PORT}`);
 });
 
+// Self-ping every 4 minutes
+setInterval(() => {
+  http.get("https://pooool.onrender.com/"); // change this to your URL
+}, 240000);
+
 import { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionFlagsBits } from 'discord.js';
 import axios from 'axios';
 import fs from 'fs';
