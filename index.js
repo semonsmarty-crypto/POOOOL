@@ -4,7 +4,7 @@ import https from "https";
 // ---- Auto-Ping Job (keeps Render app awake) ----
 const job = new cron.CronJob("*/14 * * * *", () => {
     https
-        .get("https://your-app-name.onrender.com", (res) => {
+        .get("https://pooool.onrender.com", (res) => {
             if (res.statusCode === 200) {
                 console.log("✅ Ping successful at", new Date().toLocaleTimeString());
             } else {
@@ -31,6 +31,7 @@ const defaultConfig = {
     roles: {
         guard: '1424697474978938920',
         infantryCavalryArtillery: '1424697278588784670',
+        saxon: '1441696640544149607',
         enlisted: '1424320589178601472'
     },
     pings: {
@@ -494,7 +495,7 @@ client.on('interactionCreate', async (interaction) => {
                 .setCustomId('division')
                 .setLabel('Which Division do you wish to join?')
                 .setStyle(TextInputStyle.Short)
-                .setPlaceholder('Guard, Infantry, Cavalry, Artillery or None?')
+                .setPlaceholder('Guard, Infantry, Cavalry, Artillery, Saxon or None?')
                 .setRequired(true)
                 .setMaxLength(20);
             
@@ -600,7 +601,7 @@ client.on('interactionCreate', async (interaction) => {
                 });
             }
             
-            const validDivisions = ['guard', 'infantry', 'cavalry', 'artillery', 'none', 'n/a'];
+            const validDivisions = ['guard', 'infantry', 'cavalry', 'artillery', 'saxon', 'none', 'n/a'];
             const normalizedDivision = division.toLowerCase();
             
             if (!validDivisions.includes(normalizedDivision)) {
@@ -746,14 +747,24 @@ client.on('interactionCreate', async (interaction) => {
 async function processApplication(applicationData, member, guild, autoAccepted) {
     const { robloxUsername, robloxId, discordUsername, timezone, division, activity, userId } = applicationData;
     
-    const isGuard = division === 'guard';
-    const divisionRole = isGuard ? config.roles.guard : config.roles.infantryCavalryArtillery;
+    let divisionRole = null;
+
+    if (division === 'guard') {
+        divisionRole = config.roles.guard;
+    } else if (division === 'saxon') {
+        divisionRole = config.roles.saxon;
+    } else if (division !== 'none' && division !== 'n/a') {
+        divisionRole = config.roles.infantryCavalryArtillery;
+    }
+
     const enlistedRole = config.roles.enlisted;
     const inviteLink = isGuard ? config.invites.guard : config.invites.others;
     const pingRole = isGuard ? config.pings.guard : config.pings.others;
     
     try {
-        await member.roles.add(divisionRole);
+        if (divisionRole) {
+            await member.roles.add(divisionRole);
+        }
         await member.roles.add(enlistedRole);
         await member.roles.add("1441437910451621908");
     } catch (error) {
