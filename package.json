@@ -8,6 +8,7 @@
   },
   "dependencies": {
   "discord.js": "^14.11.0",
+  "cron": "^3.1.0",
   "axios": "^1.7.0"
   }
 }
