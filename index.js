@@ -36,11 +36,14 @@ const defaultConfig = {
     },
     pings: {
         guard: '1425835026250993674',
+        saxon: '1425835026250993674',
         others: '1424697278588784670',
         altReview: '1424371366110564402'
     },
+
     invites: {
         guard: 'https://discord.gg/HCvMxhA9HX',
+        saxon: 'https://discord.gg/rxqm7cF3Yd',
         others: 'https://discord.gg/xF6Tv3GQ8u'
     },
     panel: {
@@ -610,7 +613,7 @@ client.on('interactionCreate', async (interaction) => {
                         embeds: [new EmbedBuilder()
                             .setColor('#FF0000')
                             .setTitle('❌ Application Error - Invalid Division')
-                            .setDescription(`**Invalid division:** You entered "${division}"\n\n**Valid options:**\n• Guard\n• Infantry\n• Cavalry\n• Artillery\n• None\n\nPlease submit your application again with a correct division choice.`)
+                            .setDescription(`**Invalid division:** You entered "${division}"\n\n**Valid options:**\n• Guard\n• Infantry\n• Cavalry\n• Artillery\n•Saxon\n• None\n\nPlease submit your application again with a correct division choice.`)
                             .setTimestamp()]
                     }).catch(() => {});
                 } catch (e) {}
@@ -757,9 +760,25 @@ async function processApplication(applicationData, member, guild, autoAccepted) 
         divisionRole = config.roles.infantryCavalryArtillery;
     }
 
+const isGuard = division === 'guard';
+const isSaxon = division === 'saxon';
+
+let inviteLink;
+let pingRole;
+
+if (isGuard) {
+    inviteLink = config.invites.guard;
+    pingRole = config.pings.guard;
+} else if (isSaxon) {
+    inviteLink = config.invites.saxon;
+    pingRole = config.pings.saxon;
+} else {
+    inviteLink = config.invites.others;
+    pingRole = config.pings.others;
+}
+
+
     const enlistedRole = config.roles.enlisted;
-    const inviteLink = isGuard ? config.invites.guard : config.invites.others;
-    const pingRole = isGuard ? config.pings.guard : config.pings.others;
     
     try {
         if (divisionRole) {
