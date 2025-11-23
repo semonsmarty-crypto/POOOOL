@@ -1,18 +1,23 @@
-import http from "http";
+import cron from "cron";
+import https from "https";
 
-const PORT = process.env.PORT || 3000;
-
-http.createServer((req, res) => {
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Bot is alive");
-}).listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
+// ---- Auto-Ping Job (keeps Render app awake) ----
+const job = new cron.CronJob("*/14 * * * *", () => {
+    https
+        .get("https://your-app-name.onrender.com", (res) => {
+            if (res.statusCode === 200) {
+                console.log("✅ Ping successful at", new Date().toLocaleTimeString());
+            } else {
+                console.log("⚠️ Ping failed:", res.statusCode);
+            }
+        })
+        .on("error", (e) => {
+            console.error("❌ Ping error:", e.message);
+        });
 });
 
-// Self-ping every 4 minutes
-setInterval(() => {
-  http.get("https://pooool.onrender.com/"); // change this to your URL
-}, 240000);
+// Start the cron job
+job.start();
 
 import { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, ModalBuilder, TextInputBuilder, TextInputStyle, PermissionFlagsBits } from 'discord.js';
 import axios from 'axios';
