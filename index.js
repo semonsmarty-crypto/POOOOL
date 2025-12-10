@@ -1,19 +1,16 @@
 import cron from "cron";
-import https from "https";
+import { get as httpsGet } from "https";
 
 // ---- Auto-Ping Job (keeps Render app awake) ----
-const job = new cron.CronJob("*/14 * * * *", () => {
-    https
-        .get("https://pooool.onrender.com", (res) => {
-            if (res.statusCode === 200) {
-                console.log("✅ Ping successful at", new Date().toLocaleTimeString());
-            } else {
-                console.log("⚠️ Ping failed:", res.statusCode);
-            }
-        })
-        .on("error", (e) => {
-            console.error("❌ Ping error:", e.message);
-        });
+const job = new cron.CronJob("*/14 * * * *", async () => {
+    try {
+        const res = await fetch("https://pooool.onrender.com");
+        console.log("Ping:", res.status, new Date().toLocaleTimeString());
+    } catch (err) {
+        console.error("Ping error:", err.message);
+    }
+});
+
 });
 
 // Start the cron job
