@@ -32,18 +32,21 @@ const defaultConfig = {
         guard: '1424697474978938920',
         infantryCavalryArtillery: '1424697278588784670',
         saxon: '1441696640544149607',
+        navy: '1446495249970233547',
         enlisted: '1424320589178601472'
     },
     pings: {
         guard: '1425835026250993674',
         saxon: '1425835026250993674',
         others: '1424697278588784670',
+        navy: '1446495249970233547',
         altReview: '1424371366110564402'
     },
 
     invites: {
         guard: 'https://discord.gg/HCvMxhA9HX',
         saxon: 'https://discord.gg/rxqm7cF3Yd',
+        navy: 'https://discord.gg/Y2E2j6aC',
         others: 'https://discord.gg/xF6Tv3GQ8u'
     },
     panel: {
@@ -498,7 +501,7 @@ client.on('interactionCreate', async (interaction) => {
                 .setCustomId('division')
                 .setLabel('Which Division do you wish to join?')
                 .setStyle(TextInputStyle.Short)
-                .setPlaceholder('Guard, Infantry, Cavalry, Artillery, Saxon or None?')
+                .setPlaceholder('Guard, Navy, Infantry, Cavalry, Artillery, Saxon or None?')
                 .setRequired(true)
                 .setMaxLength(20);
             
@@ -604,7 +607,7 @@ client.on('interactionCreate', async (interaction) => {
                 });
             }
             
-            const validDivisions = ['guard', 'infantry', 'cavalry', 'artillery', 'saxon', 'none', 'n/a'];
+            const validDivisions = ['guard', 'infantry', 'cavalry', 'artillery', 'saxon', 'navy', 'none', 'n/a'];
             const normalizedDivision = division.toLowerCase();
             
             if (!validDivisions.includes(normalizedDivision)) {
@@ -753,15 +756,20 @@ async function processApplication(applicationData, member, guild, autoAccepted) 
     let divisionRole = null;
 
     if (division === 'guard') {
-        divisionRole = config.roles.guard;
-    } else if (division === 'saxon') {
-        divisionRole = config.roles.saxon;
-    } else if (division !== 'none' && division !== 'n/a') {
-        divisionRole = config.roles.infantryCavalryArtillery;
-    }
+    divisionRole = config.roles.guard;
+} else if (division === 'saxon') {
+    divisionRole = config.roles.saxon;
+} else if (division === 'navy') {
+    divisionRole = config.roles.navy;
+} else if (division !== 'none' && division !== 'n/a') {
+    divisionRole = config.roles.infantryCavalryArtillery;
+}
+
 
 const isGuard = division === 'guard';
 const isSaxon = division === 'saxon';
+const isNavy = division === 'navy';
+
 
 let inviteLink;
 let pingRole;
@@ -772,6 +780,9 @@ if (isGuard) {
 } else if (isSaxon) {
     inviteLink = config.invites.saxon;
     pingRole = config.pings.saxon;
+} else if (isNavy) {
+    inviteLink = config.invites.navy;
+    pingRole = config.pings.navy;
 } else {
     inviteLink = config.invites.others;
     pingRole = config.pings.others;
