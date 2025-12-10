@@ -1,15 +1,15 @@
 import cron from "cron";
-import { get as httpsGet } from "https";
 
 // ---- Auto-Ping Job (keeps Render app awake) ----
 const job = new cron.CronJob("*/14 * * * *", async () => {
     try {
         const res = await fetch("https://pooool.onrender.com");
-        console.log("Ping:", res.status, new Date().toLocaleTimeString());
+        console.log("Ping successful:", res.status, new Date().toLocaleTimeString());
     } catch (err) {
         console.error("Ping error:", err.message);
     }
 });
+
 
 });
 
@@ -136,7 +136,7 @@ function isLikelySuspiciousAccount(member) {
 
 function setupEventHandlers(client) {
 
-client.once('ready', () => {
+client.once('clientReady', () => {
     console.log(`✅ Bot is online as ${client.user.tag}`);
     console.log(`📊 Serving ${client.guilds.cache.size} server(s)`);
     console.log(`🎮 Command prefix: ${config.prefix}`);
