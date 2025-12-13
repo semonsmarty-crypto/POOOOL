@@ -576,6 +576,7 @@ if (interaction.isButton() && interaction.customId === 'start_application') {
             }
         }
     }
+          });
     
     if (interaction.isModalSubmit()) {
         if (interaction.customId === 'enlistment_application') {
