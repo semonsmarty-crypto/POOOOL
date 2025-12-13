@@ -138,7 +138,6 @@ client.once('ready', () => {
     console.log(`📊 Serving ${client.guilds.cache.size} server(s)`);
     console.log(`🎮 Command prefix: ${config.prefix}`);
 });
-    }
 
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
