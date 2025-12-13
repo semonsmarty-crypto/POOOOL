@@ -1,11 +1,5 @@
 import cron from "cron";
 
-new cron.CronJob("*/5 * * * *", async () => {
-  try {
-    await fetch("https://pooool.onrender.com");
-  } catch {}
-}).start();
-
 import {
   Client,
   GatewayIntentBits,
