@@ -2,12 +2,12 @@ import cron from "cron";
 
 // ---- Auto-Ping Job (keeps Render app awake) ----
 const job = new cron.CronJob("*/14 * * * *", async () => {
-    try {
-        const res = await fetch("https://pooool.onrender.com");
-        console.log("Ping successful:", res.status, new Date().toLocaleTimeString());
-    } catch (err) {
-        console.error("Ping error:", err.message);
-    }
+  try {
+    const res = await fetch("https://pooool.onrender.com");
+    console.log("Ping successful:", res.status);
+  } catch (err) {
+    console.error("Ping error:", err.message);
+  }
 });
 
 // Start the cron job
@@ -138,6 +138,7 @@ client.once('ready', () => {
     console.log(`📊 Serving ${client.guilds.cache.size} server(s)`);
     console.log(`🎮 Command prefix: ${config.prefix}`);
 });
+    }
 
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
