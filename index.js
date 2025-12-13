@@ -10,9 +10,6 @@ const job = new cron.CronJob("*/14 * * * *", async () => {
     }
 });
 
-
-});
-
 // Start the cron job
 job.start();
 
@@ -136,7 +133,7 @@ function isLikelySuspiciousAccount(member) {
 
 function setupEventHandlers(client) {
 
-client.once('clientReady', () => {
+client.once('ready', () => {
     console.log(`✅ Bot is online as ${client.user.tag}`);
     console.log(`📊 Serving ${client.guilds.cache.size} server(s)`);
     console.log(`🎮 Command prefix: ${config.prefix}`);
