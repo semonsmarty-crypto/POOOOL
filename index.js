@@ -613,7 +613,7 @@ client.on('interactionCreate', async (interaction) => {
                         embeds: [new EmbedBuilder()
                             .setColor('#FF0000')
                             .setTitle('❌ Application Error - Invalid Division')
-                            .setDescription(`**Invalid division:** You entered "${division}"\n\n**Valid options:**\n• Guard\n• Infantry\n• Cavalry\n• Artillery\n•Saxon\n• None\n\nPlease submit your application again with a correct division choice.`)
+                            .setDescription(`**Invalid division:** You entered "${division}"\n\n**Valid options:**\n• Guard\n•Navy\n• Infantry\n• Cavalry\n• Artillery\n•Saxon\n• None\n\nPlease submit your application again with a correct division choice.`)
                             .setTimestamp()]
                     }).catch(() => {});
                 } catch (e) {}
