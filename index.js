@@ -461,62 +461,68 @@ client.on('messageCreate', async (message) => {
 });
 
 client.on('interactionCreate', async (interaction) => {
-    if (interaction.isButton()) {
-        if (interaction.customId === 'start_application') {
-            const modal = new ModalBuilder()
-                .setCustomId('enlistment_application')
-                .setTitle('Rekrut Enlistment Application');
-            
-            const robloxInput = new TextInputBuilder()
-                .setCustomId('roblox_username')
-                .setLabel('What is your Roblox Username?')
-                .setStyle(TextInputStyle.Short)
-                .setPlaceholder('Enter your Roblox username')
-                .setRequired(true)
-                .setMaxLength(20);
-            
-            const discordInput = new TextInputBuilder()
-                .setCustomId('discord_username')
-                .setLabel('What is your Discord Username?')
-                .setStyle(TextInputStyle.Short)
-                .setPlaceholder('Enter your Discord username')
-                .setRequired(true)
-                .setMaxLength(32);
-            
-            const timezoneInput = new TextInputBuilder()
-                .setCustomId('timezone')
-                .setLabel('What is your Timezone?')
-                .setStyle(TextInputStyle.Short)
-                .setPlaceholder('NA/SA, EU/AF, or AS/OC')
-                .setRequired(true)
-                .setMaxLength(10);
-            
-            const divisionInput = new TextInputBuilder()
-                .setCustomId('division')
-                .setLabel('Which Division do you wish to join?')
-                .setStyle(TextInputStyle.Short)
-                .setPlaceholder('Guard, Navy, Infantry, Cavalry, Artillery, Saxon or None?')
-                .setRequired(true)
-                .setMaxLength(20);
-            
-            const activityInput = new TextInputBuilder()
-                .setCustomId('activity')
-                .setLabel('How often are you active? (1-10)')
-                .setStyle(TextInputStyle.Short)
-                .setPlaceholder('Enter a number from 1 to 10')
-                .setRequired(true)
-                .setMaxLength(2);
-            
-            const row1 = new ActionRowBuilder().addComponents(robloxInput);
-            const row2 = new ActionRowBuilder().addComponents(discordInput);
-            const row3 = new ActionRowBuilder().addComponents(timezoneInput);
-            const row4 = new ActionRowBuilder().addComponents(divisionInput);
-            const row5 = new ActionRowBuilder().addComponents(activityInput);
-            
-            modal.addComponents(row1, row2, row3, row4, row5);
-            
-            await interaction.showModal(modal);
-        }
+if (interaction.isButton() && interaction.customId === 'start_application') {
+    const modal = new ModalBuilder()
+        .setCustomId('enlistment_application')
+        .setTitle('Rekrut Enlistment Application');
+
+    const robloxInput = new TextInputBuilder()
+        .setCustomId('roblox_username')
+        .setLabel('What is your Roblox Username?')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('Enter your Roblox username')
+        .setRequired(true)
+        .setMaxLength(20);
+
+    const discordInput = new TextInputBuilder()
+        .setCustomId('discord_username')
+        .setLabel('What is your Discord Username?')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('Enter your Discord username')
+        .setRequired(true)
+        .setMaxLength(32);
+
+    const timezoneInput = new TextInputBuilder()
+        .setCustomId('timezone')
+        .setLabel('What is your Timezone?')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('NA/SA, EU/AF, or AS/OC')
+        .setRequired(true)
+        .setMaxLength(10);
+
+    const divisionInput = new TextInputBuilder()
+        .setCustomId('division')
+        .setLabel('Which Division do you wish to join?')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('Guard, Navy, Infantry, Cavalry, Artillery, Saxon or None?')
+        .setRequired(true)
+        .setMaxLength(20);
+
+    const activityInput = new TextInputBuilder()
+        .setCustomId('activity')
+        .setLabel('How often are you active? (1–10)')
+        .setStyle(TextInputStyle.Short)
+        .setPlaceholder('Enter a number from 1 to 10')
+        .setRequired(true)
+        .setMaxLength(2);
+
+    modal.addComponents(
+        new ActionRowBuilder().addComponents(robloxInput),
+        new ActionRowBuilder().addComponents(discordInput),
+        new ActionRowBuilder().addComponents(timezoneInput),
+        new ActionRowBuilder().addComponents(divisionInput),
+        new ActionRowBuilder().addComponents(activityInput)
+    );
+
+    try {
+        await interaction.showModal(modal);
+    } catch (err) {
+        console.error('❌ Failed to show modal:', err);
+    }
+
+    return; // 🔥 CRITICAL
+}
+
         
         if (interaction.customId.startsWith('approve_') || interaction.customId.startsWith('decline_')) {
             const userId = interaction.customId.split('_')[1];
