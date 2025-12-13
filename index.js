@@ -616,7 +616,7 @@ client.on('interactionCreate', async (interaction) => {
                 } catch (e) {}
                 
                 return interaction.editReply({
-                    content: '❌ Invalid division. Please choose: Guard, Infantry, Cavalry, or Artillery. Check your DMs for more information.',
+                    content: '❌ Invalid division. Please choose: Guard, Navy, Infantry, Cavalry, or Artillery. Check your DMs for more information.',
                     ephemeral: true
                 });
             }
