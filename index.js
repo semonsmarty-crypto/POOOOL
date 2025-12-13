@@ -339,9 +339,9 @@ function setupEventHandlers(client) {
         modal.addComponents(
           new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("roblox_username").setLabel("What is your Roblox Username?").setStyle(TextInputStyle.Short).setRequired(true)),
           new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("discord_username").setLabel("What is your Discord Username?").setStyle(TextInputStyle.Short).setRequired(true)),
-          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("timezone").setLabel("What is your Timezone?").setStyle(TextInputStyle.Short).setRequired(true)),
-          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("division").setLabel("Which Division do you wish to join?").setStyle(TextInputStyle.Short).setRequired(true)),
-          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("activity").setLabel("How often are you active? (1–10)").setStyle(TextInputStyle.Short).setRequired(true))
+          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("timezone").setLabel("What is your Timezone?").setPlaceholder("NA/SA, AS/OC, EU/AF").setStyle(TextInputStyle.Short).setRequired(true)),
+          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("division").setLabel("Which Division do you wish to join?").setPlaceholder("Guard, Navy, Infantry, Cavalry, Artillery, Saxon or None?").setStyle(TextInputStyle.Short).setRequired(true)),
+          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("activity").setLabel("How often are you active? (1–10)").setPlaceholder("1-10").setStyle(TextInputStyle.Short).setRequired(true))
         );
         await interaction.showModal(modal);
         return;
