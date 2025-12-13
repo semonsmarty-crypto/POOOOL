@@ -334,19 +334,55 @@ function setupEventHandlers(client) {
   client.on("interactionCreate", async (interaction) => {
     try {
       // Start Application button
-      if (interaction.isButton() && interaction.customId === "start_application") {
-        const modal = new ModalBuilder().setCustomId("enlistment_application").setTitle("Rekrut Enlistment Application");
-        modal.addComponents(
-          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("roblox_username").setLabel("What is your Roblox Username?").setStyle(TextInputStyle.Short).setRequired(true)),
-          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("discord_username").setLabel("What is your Discord Username?").setStyle(TextInputStyle.Short).setRequired(true)),
-          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("timezone").setLabel("What is your Timezone?").setPlaceholder("NA/SA, AS/OC, EU/AF").setStyle(TextInputStyle.Short).setRequired(true)),
-          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("division").setLabel("Which Division do you wish to join?").setPlaceholder("Guard, Navy, Infantry, Cavalry, Artillery, Saxon or None?").setStyle(TextInputStyle.Short).setRequired(true)),
-          new ActionRowBuilder().addComponents(new TextInputBuilder().setCustomId("activity").setLabel("How often are you active? (1–10)").setPlaceholder("1-10").setStyle(TextInputStyle.Short).setRequired(true))
-        );
-        await interaction.showModal(modal);
-        return;
-      }
+if (interaction.isButton() && interaction.customId === "start_application") {
+  const modal = new ModalBuilder()
+    .setCustomId("enlistment_application")
+    .setTitle("Rekrut Enlistment Application");
 
+  modal.addComponents(
+    new ActionRowBuilder().addComponents(
+      new TextInputBuilder()
+        .setCustomId("roblox_username")
+        .setLabel("What is your Roblox Username?")
+        .setStyle(TextInputStyle.Short)
+        .setRequired(true)
+    ),
+    new ActionRowBuilder().addComponents(
+      new TextInputBuilder()
+        .setCustomId("discord_username")
+        .setLabel("What is your Discord Username?")
+        .setStyle(TextInputStyle.Short)
+        .setRequired(true)
+    ),
+    new ActionRowBuilder().addComponents(
+      new TextInputBuilder()
+        .setCustomId("timezone")
+        .setLabel("What is your Timezone?")
+        .setPlaceholder("NA/SA, EU/AF, AS/OC")
+        .setStyle(TextInputStyle.Short)
+        .setRequired(true)
+    ),
+    new ActionRowBuilder().addComponents(
+      new TextInputBuilder()
+        .setCustomId("division")
+        .setLabel("Which Division do you wish to join?")
+        .setPlaceholder("Guard, Navy, Infantry, Cavalry, Artillery, Saxon, None")
+        .setStyle(TextInputStyle.Short)
+        .setRequired(true)
+    ),
+    new ActionRowBuilder().addComponents(
+      new TextInputBuilder()
+        .setCustomId("activity")
+        .setLabel("How often are you active? (1–10)")
+        .setPlaceholder("1–10")
+        .setStyle(TextInputStyle.Short)
+        .setRequired(true)
+    )
+  );
+
+  await interaction.showModal(modal);
+  return; // ← THIS IS CRITICAL
+}
       // Approve / Decline buttons
       if (interaction.isButton() && (interaction.customId.startsWith("approve_") || interaction.customId.startsWith("decline_"))) {
         const [action, userId] = interaction.customId.split("_");
