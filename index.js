@@ -579,7 +579,6 @@ client.on('interactionCreate', async (interaction) => {
                 }
             }
         }
-    }
           });
     
     if (interaction.isModalSubmit()) {
