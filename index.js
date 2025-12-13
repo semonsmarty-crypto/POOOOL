@@ -520,13 +520,6 @@ client.on('interactionCreate', async (interaction) => {
         return;
     }
 
-    // MODAL SUBMISSION
-    if (interaction.isModalSubmit() &&
-        interaction.customId === 'enlistment_application') {
-        // your existing modal submit logic here
-        return;
-    }
-
         
         if (interaction.customId.startsWith('approve_') || interaction.customId.startsWith('decline_')) {
             const userId = interaction.customId.split('_')[1];
@@ -752,6 +745,7 @@ client.on('interactionCreate', async (interaction) => {
             }
         }
     }
+}
 });
 
 async function processApplication(applicationData, member, guild, autoAccepted) {
