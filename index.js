@@ -528,8 +528,6 @@ client.on('interactionCreate', async (interaction) => {
         return;
     }
 
-});
-
         
         if (interaction.customId.startsWith('approve_') || interaction.customId.startsWith('decline_')) {
             const userId = interaction.customId.split('_')[1];
