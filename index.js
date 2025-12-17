@@ -88,10 +88,10 @@ let botClient = null; // will be assigned in startBot
 // ---- Auto-Ping Job (keeps Render app awake) ----
 new cron.CronJob("*/14 * * * *", async () => {
   try {
-    const res = await fetch("https://pooool.onrender.com");
+    const res = await axios.get("https://pooool.onrender.com");
     console.log("Ping successful:", res.status);
   } catch (err) {
-    console.error("Ping error:", err?.message || err);
+    console.error("Ping error:", err?.response?.status || err?.message || err);
   }
 }).start();
 
