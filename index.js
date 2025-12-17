@@ -16,6 +16,13 @@ import axios from "axios";
 import fs from "fs";
 
 const CONFIG_FILE = "config.json";
+// --- regiment / division role mapping (add near other constants) ---
+const ROLE_INFANTRY   = "1427199586941931562";
+const ROLE_CAVALRY    = "1427199429856854016";
+const ROLE_ARTILLERY  = "1425543781750669483";
+
+// put your XIV division role id here (replace the placeholder)
+const XIV_DIVISION_ROLE = "PUT_XIV_ROLE_ID_HERE";
 
 const defaultConfig = {
   logChannel: null,
@@ -476,29 +483,44 @@ function setupEventHandlers(client) {
 async function processApplication(applicationData, member, guild, autoAccepted) {
   const { robloxUsername, robloxId, discordUsername, timezone, division, activity, userId } = applicationData;
 
+  // --- determine actual division role (map specific regiments) ---
   let divisionRole = null;
-  if (division === "guard") divisionRole = config.roles.guard;
-  else if (division === "saxon") divisionRole = config.roles.saxon;
-  else if (division === "navy") divisionRole = config.roles.navy;
-  else if (division !== "none" && division !== "n/a") divisionRole = config.roles.infantryCavalryArtillery;
+  const normalized = (division || "").toLowerCase();
 
-  const isGuard = division === "guard";
-  const isSaxon = division === "saxon";
-  const isNavy = division === "navy";
-
-  let inviteLink, pingRole;
-  if (isGuard) { inviteLink = config.invites.guard; pingRole = config.pings.guard; }
-  else if (isSaxon) { inviteLink = config.invites.saxon; pingRole = config.pings.saxon; }
-  else if (isNavy) { inviteLink = config.invites.navy; pingRole = config.pings.navy; }
-  else { inviteLink = config.invites.others; pingRole = config.pings.others; }
+  if (normalized === "guard") divisionRole = config.roles.guard;
+  else if (normalized === "saxon") divisionRole = config.roles.saxon;
+  else if (normalized === "navy") divisionRole = config.roles.navy;
+  else if (normalized === "infantry") divisionRole = ROLE_INFANTRY;
+  else if (normalized === "cavalry") divisionRole = ROLE_CAVALRY;
+  else if (normalized === "artillery") divisionRole = ROLE_ARTILLERY;
+  else if (normalized !== "none" && normalized !== "n/a") divisionRole = config.roles.infantryCavalryArtillery;
 
   const enlistedRole = config.roles.enlisted;
 
+  // build the array of roles to add in one call (keeps it atomic)
+  const rolesToAdd = [];
+
+  if (divisionRole) rolesToAdd.push(divisionRole);
+  if (enlistedRole) rolesToAdd.push(enlistedRole);
+
+  // keep your existing hardcoded role (leave as-is if intentional)
+  rolesToAdd.push("1441437910451621908");
+
+  // if they joined infantry/cavalry/artillery, also add the XIV division role
+  if (["infantry", "cavalry", "artillery"].includes(normalized)) {
+    if (XIV_DIVISION_ROLE && XIV_DIVISION_ROLE !== "PUT_XIV_ROLE_ID_HERE") {
+      rolesToAdd.push(XIV_DIVISION_ROLE);
+    } else {
+      console.warn("XIV_DIVISION_ROLE not set, skipping XIV assignment.");
+    }
+  }
+
   try {
-    if (divisionRole) await member.roles.add(divisionRole);
-    await member.roles.add(enlistedRole);
-    await member.roles.add("1441437910451621908");
-  } catch (err) { console.error("Error assigning roles:", err?.message || err); }
+    // add all roles in a single call (discord.js accepts an array)
+    if (rolesToAdd.length) await member.roles.add(rolesToAdd);
+  } catch (err) {
+    console.error("Error assigning roles:", err?.message || err);
+  }
 
   try { await member.setNickname(robloxUsername).catch(() => {}); } catch (err) { console.error("Error setting nickname:", err?.message || err); }
 
